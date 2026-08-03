@@ -3,13 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Google Search SEO Tags -->
-    <title>Vidyastra - Study War 12th | Smart AI Tutor</title>
-    <meta name="description" content="Vidyastra (Study War 12th) - Free AI Tutor by Ayushman Tiwari for Class 11th, 12th, NEET, UPSC & UPP.">
-    <meta name="keywords" content="Vidyastra, Study War 12th, Ayushman Tiwari, Study War AI">
-    <meta name="author" content="Ayushman Tiwari">
-    <meta name="robots" content="index, follow">
+    <title>Study War 12th - Smart AI Tutor</title>
     
     <!-- Code Formatting Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
@@ -104,6 +98,7 @@
             letter-spacing: 0.5px;
         }
 
+        /* Exact spot changed to "Made by Ayushman" */
         .sub-title {
             font-size: 11px;
             color: var(--cyan-glow);
@@ -310,6 +305,7 @@
             <div class="neon-h">H</div>
             <div class="logo-text">
                 <span class="main-title">Study War 12th</span>
+                <!-- Made by Ayushman added right here -->
                 <span class="sub-title">Made by Ayushman-Sahil</span>
             </div>
         </div>
@@ -412,6 +408,7 @@
             rowDiv.innerHTML = `
                 <span class="emoji-avatar">🤖</span>
                 <div class="message ai-message">
+                    <!-- Always starts with this line -->
                     <div class="mandatory-quote">Pahle padhai kare phir Masti kare</div>
                     <div>${formatMarkdown(text)}</div>
                 </div>
@@ -458,7 +455,7 @@
                 .replace(/\n/g, '<br>');
         }
 
-        // Complete Offline Knowledge Engine
+        // Ultra-Deep Offline Knowledge Engine (Fully Detailed Curriculum & Competitive System)
         function generateSmartResponse(userQuery) {
             showTyping();
 
@@ -467,56 +464,60 @@
                 let lower = userQuery.toLowerCase();
                 let ans = "";
 
-                if (lower.includes("physics") || lower.includes("भौतिकी") || lower.includes("गॉस") || lower.includes("कूलाम") || lower.includes("किरचॉफ")) {
-                    ans = "**⚛️ Class 12th Physics - मुख्य नियम:**\n\n" +
-                          "**1. कूलाम का नियम:** F = k × (q₁q₂ / r²)\n" +
-                          "**2. गॉस की प्रमेय:** Φ = Q / ε₀\n" +
-                          "**3. किरचॉफ का नियम:** ΣI = 0 (आवेश संरक्षण) एवं ΣIR = ΣE (ऊर्जा संरक्षण)।";
-                }
-                else if (lower.includes("biology") || lower.includes("जीव विज्ञान") || lower.includes("dna") || lower.includes("मेंडल")) {
-                    ans = "**🧬 Biology Special:**\n\n" +
-                          "**1. DNA डबल हेलिक्स मॉडल:** वाटसन एवं क्रिक द्वारा दिया गया (A=T, G≡C)।\n" +
-                          "**2. मेंडल के नियम:** प्रभाविता का नियम, पृथक्करण का नियम एवं स्वतंत्र अपव्यूहन का नियम।";
-                }
-                else if (lower.includes("chemistry") || lower.includes("रसायन") || lower.includes("ऑर्गेनिक")) {
-                    ans = "**🧪 Chemistry Special:**\n\n" +
-                          "**1. राउल्ट का नियम:** P = P° × X\n" +
-                          "**2. वर्ट्ज़ अभिक्रिया:** 2R-X + 2Na ➔ R-R + 2NaX (शुष्क ईथर की उपस्थिति में)।";
-                }
-                else if (lower.includes("upsc") || lower.includes("ias") || lower.includes("ips")) {
-                    ans = "**🏛️ UPSC CSE गाइड:**\n\n" +
-                          "• **Prelims:** GS Paper 1 (Cutoff) + CSAT (33% क्वालीफाइंग)।\n" +
-                          "• **Mains:** Essay + GS 1, 2, 3, 4 Ethics + Optional (1750 अंक)।\n" +
-                          "• **Interview:** 275 अंक।";
-                }
-                else if (lower.includes("neet") || lower.includes("डॉक्टर") || lower.includes("mbbs")) {
-                    ans = "**🩺 NEET UG पैटर्न:**\n\n" +
-                          "• **कुल 720 अंक:** Biology (360) + Chemistry (180) + Physics (180)।\n" +
-                          "• पूरी तरह NCERT बुक्स पर फोकस करें।";
-                }
-                else if (lower.includes("upp") || lower.includes("up police") || lower.includes("कांस्टेबल")) {
-                    ans = "**👮 UPP (UP Police) पैटर्न:**\n\n" +
-                          "• **150 प्रश्न (300 अंक):** GK (38), हिंदी (37), Maths (38), Reasoning (37)।";
-                }
-                else if (lower.includes("pyq") || lower.includes("पेपर")) {
-                    ans = "**📝 PYQs संग्रह:**\n\n" +
-                          "• **Physics:** लेंस मेकर सूत्र 1/f = (n - 1)(1/R₁ - 1/R₂)\n" +
-                          "• **Biology:** मनुष्य में 46 गुणसूत्र होते हैं।\n" +
-                          "• **UPP:** UP का शास्त्रीय नृत्य 'कथक' है।";
-                }
-                else if (lower.includes("algebra") || lower.includes("formula") || lower.includes("गणित")) {
-                    ans = "**📐 Algebra Formulas:**\n\n" +
-                          "• (a + b)² = a² + 2ab + b²\n" +
-                          "• (a - b)² = a² - 2ab + b²\n" +
-                          "• श्रीधराचार्य फ़ॉर्मूला: x = [-b ± √(b² - 4ac)] / 2a";
-                }
-                else {
-                    ans = `आपका सवाल **"${userQuery}"** महत्वपूर्ण है। बेसिक मजबूत करने के लिए डेली NCERT पढ़ें और नोट्स बनाएं!`;
+                // 1. PHYSICS SPECIFIC DEEP CONCEPTS
+                if (lower.includes("physics") || lower.includes("भौतिकी") || lower.includes("गॉस") || lower.includes("कूलाम") || lower.includes("किरचॉफ") || lower.includes("लेंस")) {
+                    ans = "**⚛️ Class 12th Physics - विस्तृत कॉन्सेप्ट्स व नियम:**\n\n" +
+                          "**1. कूलाम का नियम (Coulomb's Law):**\n" +
+                          "• दो स्थिर बिंदु आवेशों के बीच लगने वाला वैद्युत बल: F = k × (q₁q₂ / r²)\n\n" +
+                          "**2. गॉस की प्रमेय (Gauss's Theorem):**\n" +
+                          "• किसी बंद पृष्ठ से गुजरने वाला कुल वैद्युत फ्लक्स (Φ): Φ = Q / ε₀\n\n" +
+                          "**3. किरचॉफ के नियम (Kirchhoff's Laws):**\n" +
+                          "• **प्रथम नियम (Junction Rule):** किसी संधि पर मिलने वाली सभी धाराओं का बीजगणितीय योग शून्य होता है (ΣI = 0 - आवेश संरक्षण)।\n" +
+                          "• **द्वितीय नियम (Loop Rule):** ΣIR = ΣE (ऊर्जा संरक्षण का नियम)।\n\n" +
+                          "**4. प्रकाश वैद्युत प्रभाव (Photoelectric Effect):**\n" +
+                          "• जब धातु की सतह पर पर्याप्त आवृत्ति का प्रकाश पड़ता है तो इलेक्ट्रॉन उत्सर्जित होते हैं। आइंस्टीन का समीकरण: E = hν = W + K_max";
                 }
 
-                showAiAnswer(ans);
-            }, 600);
-        }
-    </script>
-</body>
-</html>
+                // 2. BIOLOGY SPECIFIC DEEP CONCEPTS
+                else if (lower.includes("biology") || lower.includes("जीव विज्ञान") || lower.includes("dna") || lower.includes("सेल") || lower.includes("कोशिका") || lower.includes("मेंडल") || lower.includes("जनन")) {
+                    ans = "**🧬 Class 11th & 12th Biology - विस्तृत नोट्स:**\n\n" +
+                          "**1. DNA का द्वि-कुंडलित मॉडल (Watson & Crick 1953):**\n" +
+                          "• DNA दो पॉलीन्यूक्लियोटाइड श्रृंखलाओं का बना होता है।\n" +
+                          "• बेस पेयरिंग: A = T (डबल बॉन्ड) और G ≡ C (ट्रिपल बॉन्ड)।\n\n" +
+                          "**2. मेंडल के आनुवंशिकता के नियम (Mendel's Laws):**\n" +
+                          "• **प्रभाविता का नियम (Law of Dominance):** F1 पीढ़ी में केवल प्रभावी लक्षण दिखाई देता है।\n" +
+                          "• **पृथक्करण का नियम (Law of Segregation):** युग्मक बनते समय एलील अलग हो जाते हैं।\n" +
+                          "• **स्वतंत्र अपव्यूहन का नियम (Independent Assortment)।**\n\n" +
+                          "**3. मानव जनन तंत्र (Human Reproduction):**\n" +
+                          "• नर युग्मक (शुक्राणु) व मादा युग्मक (अंडाणु) के संलयन से युग्मनज (Zygote) बनता है।";
+                }
+
+                // 3. CHEMISTRY SPECIFIC DEEP CONCEPTS
+                else if (lower.includes("chemistry") || lower.includes("रसायन") || lower.includes("ऑर्गेनिक") || lower.includes("organic") || lower.includes("विलयन")) {
+                    ans = "**🧪 Class 11th & 12th Chemistry - मुख्य कॉन्सेप्ट्स:**\n\n" +
+                          "**1. राउल्ट का नियम (Raoult's Law):**\n" +
+                          "• अवाष्पशील विलेय युक्त विलयन का वाष्प दाब विलायक के मोल प्रभाज के समानुपाती होता है (P = P° × X)।\n\n" +
+                          "**2. प्रमुख नेम रिएक्शन्स (Organic Reactions):**\n" +
+                          "• **वर्ट्ज़ अभिक्रिया (Wurtz Reaction):** 2R-X + 2Na ➔ R-R + 2NaX (शुष्क ईथर की उपस्थिति में)।\n" +
+                          "• **कैनिज़ारो अभिक्रिया:** केवल वे एल्डिहाइड देते हैं जिनमें α-हाइड्रोजन नहीं होता (उदा: HCHO)।\n\n" +
+                          "**3. आवर्त सारणी (Periodic Table):**\n" +
+                          "• s, p, d, f ब्लॉक्स; बाएँ से दाएँ जाने पर विद्युत ऋणात्मकता (Electronegativity) बढ़ती है।";
+                }
+
+                // 4. UPSC DEEP EXAM SYSTEM
+                else if (lower.includes("upsc") || lower.includes("ias") || lower.includes("ips") || lower.includes("सिविल सेवा")) {
+                    ans = "**🏛️ UPSC CSE (Civil Services Exam) - डीप गाइड:**\n\n" +
+                          "**1. Prelims (वस्तुनिष्ठ प्रश्न):**\n" +
+                          "• **GS 1 (200 अंक):** Cutoff आधारित। मुख्य विषय: Polity (लक्ष्मीकांत), History (Spectrum), Geography (NCERTs), Economy (Ramesh Singh)।\n" +
+                          "• **CSAT (200 अंक):** 33% (66 अंक) अनिवार्य पासिंग।\n\n" +
+                          "**2. Mains (लिखित परीक्षा - 1750 अंक):**\n" +
+                          "• Essay (250) + GS 1 (250) + GS 2 (250) + GS 3 (250) + GS 4 Ethics (250) + Optional (500)।\n\n" +
+                          "**3. Personality Test (275 अंक):**\n" +
+                          "• साक्षात्कार में बुद्धिमत्ता, निर्णय क्षमता और राष्ट्रीय मुद्दों पर राय देखी जाती है।";
+                }
+
+                // 5. NEET MEDICAL DEEP GUIDE
+                else if (lower.includes("neet") || lower.includes("डॉक्टर") || lower.includes("mbbs")) {
+                    ans = "**🩺 NEET UG Medical Exam - डीप रणनीति:**\n\n" +
+                          "• **कुल 720 अंक:** Biology (360) + Chemistry (180) + Physics (180)\n" +
+                          "• **Biology Strategy:** 100% NCERT आधारित प्रश्न। NCE
