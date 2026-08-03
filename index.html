@@ -49,7 +49,7 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
-        /* Neon Header Logo */
+        /* Header Logo */
         .header-logo {
             display: flex;
             align-items: center;
@@ -98,7 +98,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Exact spot changed to "Made by Ayushman" */
         .sub-title {
             font-size: 11px;
             color: var(--cyan-glow);
@@ -305,7 +304,6 @@
             <div class="neon-h">H</div>
             <div class="logo-text">
                 <span class="main-title">Study War 12th</span>
-                <!-- Made by Ayushman added right here -->
                 <span class="sub-title">Made by Ayushman-Sahil</span>
             </div>
         </div>
@@ -323,13 +321,18 @@
             <div id="chat-messages"></div>
             
             <div id="input-area">
-                <input type="text" id="user-input" placeholder="कोई भी सवाल पूछें (Maths, Science, Routine)...">
+                <input type="text" id="user-input" placeholder="कोई भी सवाल पूछें (UPSC, 12th, NEET, Maths)...">
                 <button id="send-btn">➤</button>
             </div>
         </div>
     </div>
 
     <script>
+        // API KEY HERE (Line 218)
+        const API_KEY = "AlzaSyAocKiAEVSGzVHKkvHi8qMts0S8AWa2vqo"; 
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        const SYSTEM_PROMPT = `You are "Study War 12th", a personal AI tutor for Indian students. Answer detailed, basic to advanced explanations in Hindi/Hinglish.`;
+
         const onboardingScreen = document.getElementById('onboarding-screen');
         const chatScreen = document.getElementById('chat-screen');
         const chatMessages = document.getElementById('chat-messages');
@@ -337,6 +340,7 @@
         const sendBtn = document.getElementById('send-btn');
         
         let userName = localStorage.getItem('study_war_user_name') || "";
+        let chatHistory = [];
 
         if (userName) {
             showChatScreen();
@@ -358,9 +362,7 @@
         function showChatScreen() {
             onboardingScreen.style.display = 'none';
             chatScreen.style.display = 'flex';
-            
-            // Initial greeting with name
-            showAiWelcome(`Hello ${userName} 👋! मैं आपकी क्या मदद कर सकता हूँ? आप मुझसे 10th, 12th, NEET, या किसी भी Competitive Exam की सही तैयारी के लिए सवाल पूछ सकते हैं।`);
+            showAiWelcome(`Hello ${userName} 👋! मैं आपकी क्या मदद कर सकता हूँ? आप मुझसे 10th, 12th, NEET, JEE या UPSC की तैयारी से जुड़ा कोई भी सवाल पूछ सकते हैं।`);
         }
 
         sendBtn.addEventListener('click', handleSend);
@@ -375,7 +377,7 @@
             showUserMessage(text);
             userInput.value = '';
             
-            generateSmartResponse(text);
+            getAiResponse(text);
         }
 
         function showUserMessage(text) {
@@ -408,7 +410,6 @@
             rowDiv.innerHTML = `
                 <span class="emoji-avatar">🤖</span>
                 <div class="message ai-message">
-                    <!-- Always starts with this line -->
                     <div class="mandatory-quote">Pahle padhai kare phir Masti kare</div>
                     <div>${formatMarkdown(text)}</div>
                 </div>
@@ -455,55 +456,46 @@
                 .replace(/\n/g, '<br>');
         }
 
-        // Dedicated Academic Knowledge Engine (Never Fails)
-        function generateSmartResponse(userQuery) {
+        async function getAiResponse(userMessage) {
             showTyping();
 
-            setTimeout(() => {
+            let contents = [
+                { role: "user", parts: [{ text: SYSTEM_PROMPT + ` (Student Name: ${userName})` }] },
+                { role: "model", parts: [{ text: "Samajh gaya! Main Study War 12th AI Tutor hu." }] }
+            ];
+
+            chatHistory.slice(-6).forEach(msg => {
+                contents.push({ role: msg.role, parts: [{ text: msg.text }] });
+            });
+
+            contents.push({ role: "user", parts: [{ text: userMessage }] });
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: contents })
+                });
+
+                const data = await response.json();
                 hideTyping();
-                let lower = userQuery.toLowerCase();
-                let ans = "";
 
-                if (lower.includes("algebra") || lower.includes("formula") || lower.includes("बीजगणित")) {
-                    ans = "यहाँ बीजगणित (Algebra) के बेसिक से लेकर एडवांस तक के सभी महत्वपूर्ण फ़ॉर्मूले दिए गए हैं:\n\n" +
-                          "**1. बेसिक फ़ॉर्मूले:**\n" +
-                          "• (a + b)² = a² + 2ab + b²\n" +
-                          "• (a - b)² = a² - 2ab + b²\n" +
-                          "• a² - b² = (a - b)(a + b)\n" +
-                          "• (a + b + c)² = a² + b² + c² + 2ab + 2bc + 2ca\n\n" +
-                          "**2. एडवांस क्यूब फ़ॉर्मूले:**\n" +
-                          "• (a + b)³ = a³ + b³ + 3ab(a + b)\n" +
-                          "• (a - b)³ = a³ - b³ - 3ab(a - b)\n" +
-                          "• a³ + b³ = (a + b)(a² - ab + b²)\n" +
-                          "• a³ - b³ = (a - b)(a² + ab + b²)\n\n" +
-                          "**3. द्विघात समीकरण (Quadratic Equation):**\n" +
-                          "• ax² + bx + c = 0 के लिए श्रीधराचार्य फ़ॉर्मूला: x = [-b ± √(b² - 4ac)] / 2a\n\n" +
-                          "इन फ़ॉर्मूलों को अपनी नोटबुक में नोट कर लें, यह बोर्ड एग्ज़ाम और कॉम्पिटिटिव एग्ज़ाम्स दोनों के लिए बहुत महत्वपूर्ण हैं!";
-                } 
-                else if (lower.includes("biology") || lower.includes("जीव विज्ञान") || lower.includes("cell")) {
-                    ans = "बायोलॉजी के महत्वपूर्ण टॉपिक और डायग्राम्स सीखने के लिए टिप्स:\n\n" +
-                          "**1. कोशिका (Cell):** यह जीवन की सबसे छोटी संरचनात्मक और कार्यात्मक इकाई है।\n" +
-                          "**2. प्रकाश संश्लेषण (Photosynthesis):** 6CO₂ + 6H₂O + सूर्य का प्रकाश ➔ C₆H₁₂O₆ + 6O₂\n" +
-                          "**3. डीएनए (DNA):** आनुवंशिक जानकारी को एक पीढ़ी से दूसरी पीढ़ी में ले जाता है।";
-                }
-                else if (lower.includes("routine") || lower.includes("time table") || lower.includes("रूटीन")) {
-                    ans = `प्रिय ${userName}, 12th/बोर्ड एग्ज़ाम्स के लिए बेस्ट स्टडी रूटीन:\n\n` +
-                          "• **06:00 AM - 08:00 AM:** कठिन विषय याद करें (Physics/Biology)\n" +
-                          "• **08:00 AM - 02:00 PM:** स्कूल / कोचिंग टाइम\n" +
-                          "• **04:00 PM - 06:00 PM:** मैथ्स / न्यूमेरिकल्स की लिखित प्रैक्टिस\n" +
-                          "• **07:00 PM - 09:00 PM:** रिवीजन और डेली नोट्स बनाना\n" +
-                          "• **10:00 PM:** 7-8 घंटे की पूरी नींद लें।";
-                }
-                else if (lower.includes("hello") || lower.includes("hi") || lower.includes("नमस्ते")) {
-                    ans = `नमस्ते ${userName}! पढ़ाई से जुड़ा कोई भी डाउट (जैसे Maths formulas, Physics, Biology, Time-table) पूछें, मैं पूरा उत्तर दूंगा।`;
-                }
-                else {
-                    ans = `आपका सवाल **"${userQuery}"** पढ़ाई के दृष्टिकोण से बहुत महत्वपूर्ण है। किसी भी विषय को मजबूत करने के लिए सबसे पहले उसके बेसिक कॉन्सेप्ट्स को समझें, फिर डेली 30 मिनट लिखकर प्रैक्टिस करें।`;
-                }
+                if (data.candidates && data.candidates[0] && data.candidates[0].content.parts[0].text) {
+                    let aiText = data.candidates[0].content.parts[0].text;
+                    chatHistory.push({role: "user", text: userMessage});
+                    chatHistory.push({role: "model", text: aiText});
 
-                showAiAnswer(ans);
-            }, 600);
+                    showAiAnswer(aiText);
+                } else {
+                    showAiAnswer("कृपया अपना सवाल फिर से पूछें।");
+                }
+            } catch (error) {
+                hideTyping();
+                console.error("API Error:", error);
+                showAiAnswer("नेटवर्क या API कनेक्शन में समस्या है।");
+            }
         }
     </script>
 </body>
 </html>
+
