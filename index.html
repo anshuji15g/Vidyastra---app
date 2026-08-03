@@ -49,7 +49,7 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
-        /* Header Logo */
+        /* Neon Header Logo */
         .header-logo {
             display: flex;
             align-items: center;
@@ -98,6 +98,7 @@
             letter-spacing: 0.5px;
         }
 
+        /* Exact spot changed to "Made by Ayushman" */
         .sub-title {
             font-size: 11px;
             color: var(--cyan-glow);
@@ -304,6 +305,7 @@
             <div class="neon-h">H</div>
             <div class="logo-text">
                 <span class="main-title">Study War 12th</span>
+                <!-- Made by Ayushman added right here -->
                 <span class="sub-title">Made by Ayushman-Sahil</span>
             </div>
         </div>
@@ -321,15 +323,15 @@
             <div id="chat-messages"></div>
             
             <div id="input-area">
-                <input type="text" id="user-input" placeholder="कोई भी सवाल पूछें (UPSC, 12th, NEET, Maths)...">
+                <input type="text" id="user-input" placeholder="कोई भी सवाल पूछें (Maths, Science, Routine)...">
                 <button id="send-btn">➤</button>
             </div>
         </div>
     </div>
 
     <script>
-        // API KEY HERE (Line 218)
-        const API_KEY = "AlzaSyAocKiAEVSGzVHKkvHi8qMts0S8AWa2vqo"; 
+        // API Configuration
+        const API_KEY = "AlzaSyAocKiAEVSGzVHKkvHi8qMts0S8AWa2vqo";
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
         const SYSTEM_PROMPT = `You are "Study War 12th", a personal AI tutor for Indian students. Answer detailed, basic to advanced explanations in Hindi/Hinglish.`;
 
@@ -362,7 +364,9 @@
         function showChatScreen() {
             onboardingScreen.style.display = 'none';
             chatScreen.style.display = 'flex';
-            showAiWelcome(`Hello ${userName} 👋! मैं आपकी क्या मदद कर सकता हूँ? आप मुझसे 10th, 12th, NEET, JEE या UPSC की तैयारी से जुड़ा कोई भी सवाल पूछ सकते हैं।`);
+            
+            // Initial greeting with name
+            showAiWelcome(`Hello ${userName} 👋! मैं आपकी क्या मदद कर सकता हूँ? आप मुझसे 10th, 12th, NEET, या किसी भी Competitive Exam की सही तैयारी के लिए सवाल पूछ सकते हैं।`);
         }
 
         sendBtn.addEventListener('click', handleSend);
@@ -377,7 +381,7 @@
             showUserMessage(text);
             userInput.value = '';
             
-            getAiResponse(text);
+            generateSmartResponse(text);
         }
 
         function showUserMessage(text) {
@@ -410,6 +414,7 @@
             rowDiv.innerHTML = `
                 <span class="emoji-avatar">🤖</span>
                 <div class="message ai-message">
+                    <!-- Always starts with this line -->
                     <div class="mandatory-quote">Pahle padhai kare phir Masti kare</div>
                     <div>${formatMarkdown(text)}</div>
                 </div>
@@ -456,7 +461,8 @@
                 .replace(/\n/g, '<br>');
         }
 
-        async function getAiResponse(userMessage) {
+        // Live API Call to Gemini Engine
+        async function generateSmartResponse(userQuery) {
             showTyping();
 
             let contents = [
@@ -468,7 +474,7 @@
                 contents.push({ role: msg.role, parts: [{ text: msg.text }] });
             });
 
-            contents.push({ role: "user", parts: [{ text: userMessage }] });
+            contents.push({ role: "user", parts: [{ text: userQuery }] });
 
             try {
                 const response = await fetch(API_URL, {
@@ -482,17 +488,17 @@
 
                 if (data.candidates && data.candidates[0] && data.candidates[0].content.parts[0].text) {
                     let aiText = data.candidates[0].content.parts[0].text;
-                    chatHistory.push({role: "user", text: userMessage});
+                    chatHistory.push({role: "user", text: userQuery});
                     chatHistory.push({role: "model", text: aiText});
 
                     showAiAnswer(aiText);
                 } else {
-                    showAiAnswer("कृपया अपना सवाल फिर से पूछें।");
+                    showAiAnswer("क्षमा करें, उत्तर प्राप्त नहीं हो सका। कृपया पुनः प्रयास करें।");
                 }
             } catch (error) {
                 hideTyping();
                 console.error("API Error:", error);
-                showAiAnswer("नेटवर्क या API कनेक्शन में समस्या है।");
+                showAiAnswer("कनेक्शन में समस्या आ रही है। कृपया अपनी API Key या इंटरनेट चेक करें।");
             }
         }
     </script>
