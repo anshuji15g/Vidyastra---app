@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study War 12th - Smart AI Tutor</title>
+    <style>
+        /* CSS 1: Basic Reset and Colors */
+        :root {
+            --bg-color: #0b0e11;
+            --container-bg: #15191e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aab5;
+            --cyan-glow: #00e5ff;
+            --purple-glow: #bd00ff;
+            --bubble-user: #1f262e;
+            --bubble-ai: #2b343f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* CSS 2: The Neon Logo (Matching image_0.png) */
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(21, 25, 30, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+
+        .neon-h {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--cyan-glow) 0%, var(--purple-glow) 100%);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6), 0 0 15px rgba(189, 0, 255, 0.6);
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            font-size: 20px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ffffff 60%, var(--cyan-glow) 70%, var(--purple-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-title {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* CSS 3: Layout and Onboarding */
+        #app-container {
+            width: 100%;
+            height: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Initial Setup Screen */
+        #onboarding-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+            gap: 20px;
+            text-align: center;
+            z-index: 10;
+            background-color: var(--container-bg);
+            transition: all 0.5s ease;
+        }
+
+        #onboarding-screen input {
+            padding: 15px;
+            border-radius: 30px;
+            border: 2px solid #333;
+            background: #111;
+            color: white;
+            width: 80%;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        #onboarding-screen button {
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(90deg, var(--cyan-glow), var(--purple-glow));
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(189, 0, 255, 0.4);
+        }
+
+        /* CSS 4: Chat Area */
+        #chat-screen {
+            display: none; /* hidden initially */
+            flex-direction: column;
+            height: 100%;
+            padding-top: 100px; /* space for header */
+        }
+
+        #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        /* Chat Bubbles */
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.5;
+            position: relative;
+            animation: bounceIn 0.4s ease-out;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--bubble-user);
+            border-bottom-right-radius: 4px;
+            color: #eee;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background-color: var(--bubble-ai);
+            border-bottom-left-radius: 4px;
+            color: #fff;
+        }
+
+        /* The Bouncing Emoji */
+        .emoji-avatar {
+            font-size: 24px;
+            margin-right: 10px;
+            display: inline-block;
+            animation: emojiBounce 1.5s ease-in-out infinite;
+        }
+
+        .user-message .emoji-avatar {
+            margin-right: 0;
+            margin-left: 10px;
+            float: right;
+        }
+
+        /* Input Area */
+        #input-area {
+            display: flex;
+            padding: 15px;
+            background-color: rgba(255,255,255,0.05);
+            gap: 10px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            background: #111;
+            color: white;
+            font-size: 16px;
+        }
+
+        #send-btn {
+            background: none;
+            border: none;
+            color: var(--cyan-glow);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes emojiBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+
+        /* Loading Dots */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 12px 18px;
+            background: var(--bubble-ai);
+            border-radius: 18px;
+            width: fit-content;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #aaa;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- Logo (Fixed) -->
+        <div class="header-logo">
+            <div class="neon-h">H</div>
+            <div class="logo-text">
+                <span class="main-title">Study War 12th</span>
+                <span class="sub-title">FUTURE OF LEARNING</span>
+            </div>
+        </div>
+
+        <!-- 1. Onboarding Screen -->
+        <div id="onboarding-screen">
+            <h2>Welcome to Study War</h2>
+            <p style="color: #aaa;">Let's get started. What should I call you?</p>
+            <input type="text" id="user-name-input" placeholder="Your Name" required>
+            <button id="start-btn">Next ➔</button>
+        </div>
+
+        <!-- 2. Chat Screen -->
+        <div id="chat-screen">
+            <div id="chat-messages">
+                <!-- Messages will appear here -->
+            </div>
+            
+            <div id="input-area">
+                <input type="text" id="user-input" placeholder="Ask anything... (Math, Science, Daily Routine)">
+                <button id="send-btn">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JS 1: Configurations
+        const API_KEY = "AQ.Ab8RN6JBaXbsnlf8oTrnxbjH9fU5XCUN28NghCd3lO7uqWWGhA"; // **DANGEROUS: PUBLIC KEY**
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+        // System Prompt: Strict instructions for AI
+        const SYSTEM_PROMPT = `You are "Study War 12th", a personal AI tutor for Indian students (Class 10-12, NEET, JEE). 
+        You understand Hindi, English, Hinglish, and regional dialects. 
+        MANDATORY GUARDRAILS: 
+        1. Always start your very first response after the user says anything academic with exactly: "Pahle padhai kare phir Masti kare". (Do not repeat it after).
+        2. Focus only on academic growth, study planning, concepts, and doubts.
+        3. Politely refuse non-academic, harmful, or distracting topics.
+        4. Be helpful, encourage deep thinking, and give examples. Use a friendly, modern tone (like a supportive elder brother/sister).`;
+
+        // JS 2: Elements and State
+        const onboardingScreen = document.getElementById('onboarding-screen');
+        const chatScreen = document.getElementById('chat-screen');
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        let userName = "";
+        let chatHistory = []; // Local history to maintain context
+        let guardrailTriggered = false; // To ensure mandatory quote is sent once.
+
+        // JS 3: Onboarding Logic
+        document.getElementById('start-btn').addEventListener('click', startApp);
+        document.getElementById('user-name-input').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') startApp();
+        });
+
+        function startApp() {
+            userName = document.getElementById('user-name-input').value.trim();
+            if(!userName) { alert("Please enter your name!"); return; }
+
+            onboardingScreen.style.display = 'none';
+            chatScreen.style.display = 'flex';
+            
+            // Initial AI greeting (No API call needed for this)
+            showAiMessage(`Hello ${userName} 👋! Main aapki kya madad kar sakta hu? Aap mujhse 10th, 12th, NEET, ya kisi bhi Competitive Exam ki sahi taiyari ke liye use kare.`);
+        }
+
+        // JS 4: Chat UI Logic
+        sendBtn.addEventListener('click', handleUserMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') handleUserMessage();
+        });
+
+        function handleUserMessage() {
+            const text = userInput.value.trim();
+            if(!text) return;
+            
+            showUserMessage(text);
+            userInput.value = '';
+            
+            // Call API
+            getAiResponse(text);
+        }
+
+        function showUserMessage(text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message user-message';
+            msgDiv.innerHTML = `<span class="emoji-avatar">🧑‍💻</span> ${text}`;
+            chatMessages.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function showAiMessage(text, isFirstAcademicResponse = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message ai-message';
+            
+            let animatedText = text;
+            if(isFirstAcademicResponse) {
+                animatedText = `<strong>Pahle padhai kare phir Masti kare</strong><br><br>${text}`;
+            }
+
+            msgDiv.innerHTML = `<span class="emoji-avatar">🤖</span> ${animatedText}`;
+            chatMessages.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const indicator = document.getElementById('typing-indicator');
+            if(indicator) indicator.remove();
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // JS 5: API Integration (Gemini 1.5 Flash)
+        async function getAiResponse(userMessage) {
+            showTyping();
+
+            // Prepare history for API (System Prompt + History + Current Msg)
+            let contents = [
+                { role: "user", parts: [{ text: SYSTEM_PROMPT + ` (User name is ${userName})` }] },
+                { role: "model", parts: [{ text: "Understood. I am Study War 12th. Ready." }] }
+            ];
+            
+            // Add chat history (simplified for flash)
+            chatHistory.forEach(msg => {
+                contents.push({ role: msg.role, parts: [{ text: msg.text }] });
+            });
+
+            // Add current message
+            contents.push({ role: "user", parts: [{ text: userMessage }] });
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: contents })
+                });
+
+                const data = await response.json();
+                hideTyping();
+
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    let aiText = data.candidates[0].content.parts[0].text;
+                    
+                    // Add to history
+                    chatHistory.push({role: "user", text: userMessage});
+                    chatHistory.push({role: "model", text: aiText});
+
+                    // Check Guardrail (Should only show mandatory quote once, on first academic reply)
+                    let showQuote = false;
+                    if(!guardrailTriggered) {
+                        // Very simple check: is it academic? (Can be improved)
+                        const academicKeywords = ['padhai', 'study', 'math', 'science', 'exam', 'chapter', 'routine', '12th'];
+                        const lowerMsg = userMessage.toLowerCase();
+                        if(academicKeywords.some(keyword => lowerMsg.includes(keyword))) {
+                            showQuote = true;
+                            guardrailTriggered = true;
+                        }
+                    }
+
+                    showAiMessage(aiText, showQuote);
+                } else {
+                    showAiMessage("Maaf kijiye, main abhi samajh nahi paya. Fir se puche?");
+                }
+
+            } catch (error) {
+                hideTyping();
+                console.error("API Error:", error);
+                showAiMessage("Kuch technical dikkat aa gayi hai. API Key ya Internet check kare.");
+            }
+        }
+
+    </script>
+</body>
+</html>
